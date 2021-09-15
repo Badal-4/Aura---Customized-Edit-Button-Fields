@@ -1,0 +1,57 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId,force:hasSObjectName"
+                controller="accController">
+    <aura:attribute name="accList" type="Account[]"/>
+     <aura:attribute name="newRec" type="Contact"
+                    default="{ 'sobjectType': 'Account',
+                               'Name' :  ' ' ,
+                               'AccountId' : ' '}"                        
+                                           
+                    access="global" />
+    <aura:attribute name="names" type="String"/>
+    <aura:attribute name="ids" type="Id"/>
+    <aura:attribute name="bool" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <table>
+    <thead>
+        <tr>
+        <th scope="col">Account Name</th>
+            <th scope="col">Account Type</th>
+        </tr>
+        <tr>
+        </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.accList}" var="acc">
+            <tr>
+                <td>{!acc.Name}</td>
+                <td>{!acc.Type}</td>
+                <lightning:button  label="Edit" variant="brand" name="{!acc.Id}" onclick="{!c.handleEdit}"/>
+                </tr>
+            </aura:iteration>
+            </tbody>
+    </table>
+         <aura:if isTrue="{!v.bool}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+             <div class="slds-modal__container">
+                     <header class="slds-modal__header">
+                 <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                       class="slds-modal__close"/>
+                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Account</h2>
+                 </header>
+                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                         <lightning:recordEditForm recordId="{!v.ids}" objectApiName="Account">
+        <lightning:messages />
+        <lightning:outputField fieldName="Name" />
+        <lightning:inputField fieldName="Name" />
+       
+        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="update" label="Update" />
+    </lightning:recordEditForm>
+                 </div>
+                    </div>
+             </section>
+                 </aura:if>
+         
+</aura:component>
